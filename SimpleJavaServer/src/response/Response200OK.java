@@ -1,8 +1,7 @@
-package response;
-
 /**
- * Created by joakimbergqvist on 2018-02-12.
+ * This Class will produce a Response
  */
 public class Response200OK
 {
+    
 }
