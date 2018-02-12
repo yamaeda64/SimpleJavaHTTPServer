@@ -1,7 +1,14 @@
+import java.io.File;
+
 /**
- * This Class will produce a Response
+ * This Class is extending the ResponseHeader and will be used for a 200 OK response
  */
-public class Response200OK
+public class Response200OK extends ResponseHeader
 {
+    public Response200OK(File file)
+    {
+        super(file);
+    }
+    protected final String responseStatus = "HTTP/1.1 200 OK";
     
 }
