@@ -5,9 +5,11 @@ import java.io.File;
  */
 public class Response200OK extends ResponseHeader
 {
+    File file;
     public Response200OK(File file)
     {
         super(file);
+        this.file = file;
     }
     protected final String responseStatus = "HTTP/1.1 200 OK\n";
     
@@ -15,7 +17,21 @@ public class Response200OK extends ResponseHeader
     {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(responseStatus);
-        stringBuilder.append(super.getResponseHeader());
+        stringBuilder.append("Content-Length:" + file.length());
+        stringBuilder.append("\n");
+        stringBuilder.append("Content-Type: text/html; charset=UTF-8");   // TODO, this must differ depending on filetype
+        stringBuilder.append("\n");
+        stringBuilder.append("Content-Encoding: UTF-8");                    // TODO, this must differ depending on filetype (encoding)
+        stringBuilder.append("\n");
+        stringBuilder.append(getLastModifiedField());
+        stringBuilder.append("\n");
+        stringBuilder.append(getCurrentTimeField());
+        stringBuilder.append("\n");
+        stringBuilder.append("\r\n");
+        
+        super.setIncludesBody(false);
+      
+       
         return stringBuilder.toString();
     }
     

@@ -1,6 +1,4 @@
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.Socket;
 
 /**
@@ -31,25 +29,25 @@ public class HTTPConnection extends Thread
             StringBuilder receivedString = new StringBuilder();
         
             byte[] buffer = new byte[1024];  // TODO, Low server buffer
-                
+    
+            
                 /* make sure server wait until something actually arrive before trying to echo */
             while(inStream.available() < 1)
             {
             
             }
             /* Read the input from client */
-            while(true)
-            {
-            
-                int readChar = 0;
-            
-                if(inStream.available() > 0)
-                {
-                    readChar = inStream.read(buffer);
-                    receivedString.append(new String(buffer,0,readChar));
-                }
-                
-                Response response = new Response(receivedString.toString(), recourceRootFolder);
+           
+    
+               int readChar = 0;
+    
+               if(inStream.available() > 0)
+               {
+                   readChar = inStream.read(buffer);
+                   receivedString.append(new String(buffer, 0, readChar));
+               }
+    
+               Response response = new Response(receivedString.toString(), recourceRootFolder);
                 /* Input complete
             
                 String content = "<html>\n" +
@@ -74,7 +72,8 @@ public class HTTPConnection extends Thread
                         "</html>\n"
                         + "\r\n";
                 */
-                
+           
+           
                 /* WORKING HTTP 200 OK, HTML RESPONSE */
             
                 String responseString = "HTTP/1.1 200 OK\n" +
@@ -100,40 +99,41 @@ public class HTTPConnection extends Thread
             
             
             
-                buffer = response.getResponse().getBytes();
+                buffer = response.getResponseHeader().getBytes();
                 outStream.write(buffer);
-                System.out.println("out " + new String(buffer));
                 
-                /*if(readChar > 0)
-                    outStream.write(buffer,0,readChar);
-                
-                /* check if server has no more to echo
-                if(inStream.available() <= 0)
+                if(!response.getResponseIncludesBody())
                 {
-                    
-                    
-                    try
-                    {
-                        Thread.sleep(3);
-                    } catch(InterruptedException e)
-                    {
-                        e.printStackTrace();
+                    InputStream inputStream = new FileInputStream(response.getBodyasFile());
+    
+                    int readBytes = 0;
+    
+                    while ((readBytes = inputStream.read(buffer, 0, buffer.length)) > 0) {
+                        outStream.write(buffer, 0, readBytes);
+                        outStream.flush();
                     }
                     
-                    if(inStream.available() <= 0)
-                    {
-                        break;
-                    }
-                  */
-                break;
-            }
+                    
+                   String finalBytes = "/r/n";
+                   outStream.write(finalBytes.getBytes());
+                   outStream.flush();
+                   outStream.close();
+                   inputStream.close();
+                   
+                }
+               
+                System.out.println("out " + new String(buffer));   // TODO, debug
+                
+               
+                
+            
             // TODO test
             // System.out.println(new String(buffer));
         }
         catch(IOException e)
         {
             System.out.println("Exception caught when trying to listen on port "
-                    + 4950 + " or listening for a connection");
+                    + clientSocket.getLocalPort() + " or listening for a connection");
             System.out.println(e.getMessage());
         }
     

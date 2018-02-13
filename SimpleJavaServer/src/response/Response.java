@@ -6,7 +6,7 @@ import java.io.File;
 public class Response
 {
   private ResponseHeader header;
-  private File body;
+  protected File body;
   
   public Response(String request, String resourceRootFolder)
   {
@@ -37,8 +37,17 @@ public class Response
        System.out.println("Response: "+ response);  // TODO, debug
   }
   
-  public String getResponse()
+  public String getResponseHeader()
   {
       return header.getResponseHeader();
+  }
+  
+  public boolean getResponseIncludesBody()
+  {
+      return header.getIncludesBody();
+  }
+  public File getBodyasFile()
+  {
+      return body;
   }
 }

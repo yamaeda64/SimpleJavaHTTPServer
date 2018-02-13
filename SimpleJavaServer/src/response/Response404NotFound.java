@@ -23,12 +23,15 @@ public class Response404NotFound extends ResponseHeader
         stringBuilder.append("\n");
         stringBuilder.append("Content-Encoding: UTF-8");
         stringBuilder.append("\n");
-        stringBuilder.append(currentTimeField);
+        stringBuilder.append(getCurrentTimeField());
         stringBuilder.append("\n");
         stringBuilder.append("\r\n");
         stringBuilder.append(responseBody);
         stringBuilder.append("\n");
         stringBuilder.append("\r\n");
+       
+        super.setIncludesBody(true);
+        
         return stringBuilder.toString();
     }
 }

@@ -14,7 +14,8 @@ public class ResponseHeader
     private String contentEncoding;                 // TODO, read up on content encoding
     private LocalDateTime sourceLastModified;
     private String contentType;                     // TODO, manage to write this from the file extension
-    public String currentTimeField;
+    private String currentTimeField;
+    private boolean includesBody;             // A boolean to set if response has a message included, if false body should be attatched
     
     public ResponseHeader(File file)
     {
@@ -30,6 +31,26 @@ public class ResponseHeader
     
     public String getResponseHeader()
     {
-        return "header: ahahsh\n";
+        return "";
+    }
+    
+    public String getCurrentTimeField()
+    {
+        return currentTimeField;
+    }
+    
+    public String getLastModifiedField()
+    {
+        return "Last-Modified: " + sourceLastModified.toString();
+    }
+    
+    public void setIncludesBody(boolean includesBody)
+    {
+        this.includesBody = includesBody;
+    }
+    
+    public boolean getIncludesBody()
+    {
+        return includesBody;
     }
 }
