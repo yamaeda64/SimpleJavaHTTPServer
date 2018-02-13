@@ -8,9 +8,14 @@ public class Response
   private ResponseHeader header;
   private File body;
   
-  public Response(String filePath)
+  public Response(String request, String resourceRootFolder)
   {
-       body = new File(filePath);
+      
+     RequestParser parser = new RequestParser(request);
+      
+       body = new File(resourceRootFolder+parser.getPath());
+       
+       
        
        /* todo need to make sure the server files outside specified folder is safe
           
@@ -28,5 +33,12 @@ public class Response
           header = new Response200OK(body);
        }
      
+       String response = header.getResponseHeader();
+       System.out.println("Response: "+ response);  // TODO, debug
+  }
+  
+  public String getResponse()
+  {
+      return header.getResponseHeader();
   }
 }

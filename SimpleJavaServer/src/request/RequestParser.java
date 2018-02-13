@@ -34,6 +34,18 @@ public class RequestParser
         {
             throw new IllegalArgumentException("The request was in illegal form");
         }
+        
+        if(!path.contains("."))
+        {
+          if(path.charAt(path.length()-1) == '/')
+          {
+             path+= "index.html";
+          }
+          else
+          {
+             path+="/index.html";
+          }
+       }
     }
     
     

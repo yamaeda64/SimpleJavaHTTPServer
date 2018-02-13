@@ -14,6 +14,7 @@ public class ResponseHeader
     private String contentEncoding;                 // TODO, read up on content encoding
     private LocalDateTime sourceLastModified;
     private String contentType;                     // TODO, manage to write this from the file extension
+    public String currentTimeField;
     
     public ResponseHeader(File file)
     {
@@ -24,6 +25,11 @@ public class ResponseHeader
         sourceLastModified = lastModifiedTemp.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         
         currentDateTime = LocalDateTime.now(Clock.systemUTC());
-        
+        currentTimeField = "Date: " + currentDateTime.toString();  // todo reformat
+    }
+    
+    public String getResponseHeader()
+    {
+        return "header: ahahsh\n";
     }
 }
