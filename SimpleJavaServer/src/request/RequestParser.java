@@ -35,7 +35,8 @@ public class RequestParser
             throw new IllegalArgumentException("The request was in illegal form");
         }
         
-        if(!path.contains("."))
+        
+        if(isPathAFile(path) == false)
         {
           if(path.charAt(path.length()-1) == '/')
           {
@@ -45,9 +46,30 @@ public class RequestParser
           {
              path+="/index.html";
           }
+          //TODO, debug
+            System.out.println("Path: ----- " + path);
        }
     }
     
+    
+    
+    public boolean isPathAFile(String path)
+    {
+        int counter = 0;
+        if(path.length() > 4)
+        {
+            counter = path.length() - 5;
+        }
+        while(counter < path.length()-1)
+        {
+            if(path.charAt(counter) == '.')
+            {
+                return true;
+            }
+            counter++;
+        }
+        return false;
+    }
     
     
     /* Getters  */
