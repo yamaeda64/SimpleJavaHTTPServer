@@ -1,8 +1,6 @@
 import java.io.File;
 
-/**
- * Created by joakimbergqvist on 2018-02-12.
- */
+
 public class Response403Forbidden extends ResponseHeader
 {
     public Response403Forbidden(File file)

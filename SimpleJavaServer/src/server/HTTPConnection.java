@@ -28,7 +28,7 @@ public class HTTPConnection extends Thread
         
             StringBuilder receivedString = new StringBuilder();
         
-            byte[] buffer = new byte[1024];  // TODO, Low server buffer
+            byte[] buffer = new byte[1024];
     
             
                 /* make sure server wait until something actually arrive before trying to echo */

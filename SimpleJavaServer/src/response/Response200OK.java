@@ -19,10 +19,11 @@ public class Response200OK extends ResponseHeader
         stringBuilder.append(responseStatus);
         stringBuilder.append("Content-Length:" + file.length());
         stringBuilder.append("\n");
-        stringBuilder.append("Content-Type: text/html; charset=UTF-8");   // TODO, this must differ depending on filetype
-        stringBuilder.append("\n");
-        stringBuilder.append("Content-Encoding: UTF-8");                    // TODO, this must differ depending on filetype (encoding)
-        stringBuilder.append("\n");
+        //stringBuilder.append("Content-Type: text/html; charset=UTF-8");   // TODO, this must differ depending on filetype
+        //stringBuilder.append("\n");
+        //stringBuilder.append("Content-Encoding: UTF-8");                    // TODO, this must differ depending on filetype (encoding)
+      //  stringBuilder.append("Content-Type: image/png");
+       // stringBuilder.append("\n");
         stringBuilder.append(getLastModifiedField());
         stringBuilder.append("\n");
         stringBuilder.append(getCurrentTimeField());
