@@ -13,7 +13,9 @@ public class Response403Forbidden extends ResponseHeader
     {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(responseStatus);
-        stringBuilder.append(super.getResponseHeader());
+        //stringBuilder.append(super.getResponseHeader());
+    
+        super.setIncludesBody(true);
         return stringBuilder.toString();
     }
 }

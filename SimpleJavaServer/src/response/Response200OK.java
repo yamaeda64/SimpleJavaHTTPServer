@@ -39,6 +39,9 @@ public class Response200OK extends ResponseHeader
         stringBuilder.append("\n");
         stringBuilder.append(getCurrentTimeField());
         stringBuilder.append("\n");
+        // TODO test with cach and connection
+        stringBuilder.append("Connection: close\n");
+        stringBuilder.append("Cache-Control: no-store\n");
         stringBuilder.append("\r\n");
         
         super.setIncludesBody(false);

@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.IOException;
 
 /**
  * This class will hold a http resonse header and body and will take care of sending those as a stream of data
@@ -13,18 +14,15 @@ public class Response
 	  RequestParser parser = new RequestParser(request);
 
 	  body = new File(getCorrectPath(resourceRootFolder, parser.getPath()));
-
-	  /* todo need to make sure the server files outside specified folder is safe
-
-       if(filePath.length() < soucePath)
-          header = new Response403Forbidden(file);
-
-	   */
-
-	  if(!body.exists())
-		  header = new Response404NotFound(body);
-
-
+      
+      if(isOutsideSourceFolder(resourceRootFolder))
+      {
+          header = new Response403Forbidden(body);
+      }
+      else if(!body.exists())
+      {
+          header = new Response404NotFound(body);
+      }
 	  else
 	  {
 		  header = new Response200OK(body);
@@ -33,15 +31,16 @@ public class Response
 	  String response = header.getResponseHeader();
 	  System.out.println("Response: "+ response);  // TODO, debug
   }
-  
-  public String getResponseHeader()
+    
+    
+    public String getResponseHeader()
   {
       return header.getResponseHeader();
   }
   
-  public boolean getResponseIncludesBody()
+  public boolean includesBody()
   {
-      return header.getIncludesBody();
+      return header.includesBody();
   }
   public File getBodyasFile()
   {
@@ -73,4 +72,31 @@ public class Response
 	  // This only runs if there's no file at the full path
 	  return fullPath;
   }
+    
+    /**
+     * Checks if the requested folder is outside the source folder to prevent
+     * anyone reaching files in the computer that's not in the source folder.
+     * @param resourceFolder The root source folder
+     * @return boolean value of true if outside and a 403 should be returned, if false it's ok to continue with the request
+     */
+    private boolean isOutsideSourceFolder(String resourceFolder)
+    {
+        try
+        {
+            if(body.getCanonicalPath().startsWith(resourceFolder))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+
+        }
+        catch(IOException e)
+        {
+            System.out.println("there was an exception when checking security");
+        }
+        throw new InternalError("There was a problem when reading the requested file");
+    }
 }
