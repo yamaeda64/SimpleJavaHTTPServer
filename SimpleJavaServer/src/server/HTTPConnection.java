@@ -1,5 +1,9 @@
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
+import java.util.Scanner;
 
 /**
     A class that starts the request/response in a new thread
@@ -21,33 +25,52 @@ public class HTTPConnection extends Thread
     public void run()
     {
         System.out.println("new thread: " + currentThread().getName() +" created to: " + clientSocket.getInetAddress().getHostAddress());
+       // DEBUG
+        System.out.println("Start-Active ThreadCount " + Thread.activeCount());
         try
         {
-            InputStream inStream  = clientSocket.getInputStream();
+            
+            //InputStream inStream  = clientSocket.getInputStream();
+            Scanner inStream = new Scanner(clientSocket.getInputStream());
             OutputStream outStream = clientSocket.getOutputStream();
         
             StringBuilder receivedString = new StringBuilder();
-        
-            byte[] buffer = new byte[1024];
+            System.out.println("1");
+            byte[] buffer;
     
             
                 /* make sure server wait until something actually arrive before trying to echo */
-            while(inStream.available() < 1)
-            {
+          //  while(inStream.available() < 1)
+        //    {
+         //       System.out.println("2");
+        //    }
             
-            }
             /* Read the input from client */
-           
-    
-               int readChar = 0;
-    
-               if(inStream.available() > 0)
+            int readChar = 0;
+            System.out.println("3");
+          
+               while(true)
                {
-                   readChar = inStream.read(buffer);
-                   receivedString.append(new String(buffer, 0, readChar));
+                   String temp = inStream.nextLine();
+                   if(temp.isEmpty())
+                   {
+                       break;
+                   }
+                   System.out.println("6"); // TODO debug line
+                   receivedString.append(temp + "\n");
+                   System.out.print(temp);
                }
-    
-               Response response = new Response(receivedString.toString(), recourceRootFolder);
+            System.out.println("7"); // TODO, debug line
+               System.out.println(receivedString.toString());
+               Response response = null;
+               if(receivedString.length()>0)
+               {
+                   response = new Response(receivedString.toString(), recourceRootFolder);
+               }
+               
+               //TODO, debug
+               System.out.println(receivedString.toString());
+            System.out.println("8");
                 /* Input complete
             
                 String content = "<html>\n" +
@@ -76,7 +99,10 @@ public class HTTPConnection extends Thread
            
                 /* WORKING HTTP 200 OK, HTML RESPONSE */
             
-                String responseString = "HTTP/1.1 200 OK\n" +
+            /*
+               EXAMPLE RESPONSE
+               
+               String responseString = "HTTP/1.1 200 OK\n" +
                     
                         "Content-Type: text/html; charset=UTF-8\n" +
                         "Content-Encoding: UTF-8\n" +
@@ -96,36 +122,41 @@ public class HTTPConnection extends Thread
                         "</body>\n" +
                         "</html>"
                         + "\r\n";
+            */
             
-            
-            
+            if(response != null)
+            {
                 buffer = response.getResponseHeader().getBytes();
                 outStream.write(buffer);
-                
-                if(!response.getResponseIncludesBody())
+    
+                if(!response.includesBody())
                 {
                     InputStream inputStream = new FileInputStream(response.getBodyasFile());
     
                     int readBytes = 0;
     
-                    while ((readBytes = inputStream.read(buffer, 0, buffer.length)) > 0) {
+                    while((readBytes = inputStream.read(buffer, 0, buffer.length)) > 0)
+                    {
                         outStream.write(buffer, 0, readBytes);
-                        outStream.flush();
+                        //outStream.flush();
+                        System.out.println("readBytes: " + readBytes);
                     }
-                    
-                    
-                   String finalBytes = "/r/n";
-                   outStream.write(finalBytes.getBytes());
-                   outStream.flush();
-                   outStream.close();
-                   inputStream.close();
-                   
+    
+    
+                    String finalBytes = "/r/n";
+                    outStream.write(finalBytes.getBytes());
+                    outStream.flush();
+                    outStream.close();
+                    inputStream.close();
+    
+                    //TODO, debug
+                    System.out.println("Debug -here");
                 }
-               
-                System.out.println("out " + new String(buffer));   // TODO, debug
-                
-               
-                
+    
+                // System.out.println("out " + new String(buffer));   // TODO, debug
+    
+    
+            }
             
             // TODO test
             // System.out.println(new String(buffer));
@@ -146,5 +177,11 @@ public class HTTPConnection extends Thread
         {
             System.out.println("Socket couldn't be closed: " + e.getMessage());
         }
+    
+        // DEBUG
+        System.out.println("End-Active ThreadCount " + Thread.activeCount());
+        
+      
     }
+  
 }

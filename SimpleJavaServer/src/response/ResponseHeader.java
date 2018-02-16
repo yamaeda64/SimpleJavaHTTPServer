@@ -49,7 +49,7 @@ public class ResponseHeader
         this.includesBody = includesBody;
     }
     
-    public boolean getIncludesBody()
+    public boolean includesBody()
     {
         return includesBody;
     }

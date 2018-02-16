@@ -65,17 +65,24 @@ public class HTTPServer
             System.out.println("there was a problem with the resource folder");
             System.exit(1);
         }
+        
         try
         {
-            
             ServerSocket serverSocket = new ServerSocket(port);
             
             System.out.println("server start listening... ... ...");
             
+            int counter = 0;
             /* Listen if anyone connects to the clientSocket, if so, start a new thread */
             while(true)
             {
-                Socket clientSocket = new Socket();
+                // TODO DEBUG  (remove counter above)
+                counter++;
+              
+                    System.out.println("Main ThreadCount: " + Thread.activeCount());
+               
+                //END DEBUG
+                Socket clientSocket;
                 clientSocket = serverSocket.accept();
                 HTTPConnection theConnection = new HTTPConnection(clientSocket, resourceRootFolder);
             }
