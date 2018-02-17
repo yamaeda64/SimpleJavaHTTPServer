@@ -17,6 +17,9 @@ public class ResponseHeader
     private String currentTimeField;
     private boolean includesBody;             // A boolean to set if response has a message included, if false body should be attatched
     
+    // Empty constructor
+    public ResponseHeader()
+    {}
     public ResponseHeader(File file)
     {
         this.contentLength = file.length();
