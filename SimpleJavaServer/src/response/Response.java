@@ -15,7 +15,7 @@ public class Response
 
 	  body = new File(getCorrectPath(resourceRootFolder, parser.getPath()));
       
-      if(isOutsideSourceFolder(resourceRootFolder))
+      if(isOutsideSourceFolder(resourceRootFolder) || !isValidRequestType(parser.getType())) // TODO, should 403 be displayed if it's not a GET request?
       {
           header = new Response403Forbidden(body);
       }
@@ -47,8 +47,13 @@ public class Response
 	  return body;
   }
 
-  // Checks if the full path leads to a file, otherwise it tries to change the file ending from ".htm" to ".html"
-  // Or from ".html" to ".htm" if there exists file ending with ".htm"
+  /** Checks if the full path leads to a file, otherwise it tries to change the file ending from ".htm" to ".html" 
+   * and vice versa to see if it leads to a file and if so, returns the full path to the file
+   * @param resourceRootFolder The root source folder
+   * @param path Path from root folder
+   * @return A string with the correct path. If the original path leads to a file, that is immediately returned. 
+   *  Otherwise it checks if path ending with .htm or .html leads to a file and returns that path
+   */
   private String getCorrectPath(String resourceRootFolder, String path) 
   {
 	  String fullPath = resourceRootFolder + path;
@@ -64,8 +69,9 @@ public class Response
 	  if(pathEnding.equals("htm")) {
 		  return fullPath += "l";
 	  } else if(pathEnding.equals("html")) { // Returns path ending with "htm" if there's a ".htm" file but no ".html" file
-		  if(new File(fullPath.substring(0, fullPath.length() - 1)).isFile()) {
-			  return fullPath.substring(0, fullPath.length() - 1);
+		  String htmPath = fullPath.substring(0, fullPath.length() - 1);
+		  if(new File(htmPath).isFile()) {
+			  return htmPath;
 		  }
 	  }
 
@@ -98,5 +104,16 @@ public class Response
             System.out.println("there was an exception when checking security");
         }
         throw new InternalError("There was a problem when reading the requested file");
+    }
+    
+    private boolean isValidRequestType(String type) {
+    	String[] validRequests = {"GET"}; // TODO, add "POST" and "PUT" for VG tasks in Problem 2
+    	
+    	for(String request : validRequests) {
+    		if(type.equals(request)) {
+        		return true;
+        	}
+    	}
+    	return false;
     }
 }
