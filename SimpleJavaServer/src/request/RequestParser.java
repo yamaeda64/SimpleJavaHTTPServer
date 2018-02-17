@@ -19,7 +19,12 @@ public class RequestParser
     
         String[] firstLine = request[0].split(" ");
         
-        type = RequestType.valueOf(firstLine[0]);
+        try {
+        	type = RequestType.valueOf(firstLine[0]);
+        } catch (IllegalArgumentException e) {
+        	type = RequestType.ILLEGAL;
+        }
+        
         
         if(firstLine.length == 3)
         {
@@ -49,9 +54,7 @@ public class RequestParser
           }
        }
     }
-    
-    
-    
+
     public boolean isPathAFile(String path)
     {
         int counter = 0;

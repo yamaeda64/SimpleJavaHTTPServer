@@ -5,7 +5,6 @@ public enum RequestType
 {
     GET,
     POST,
-    PUT
-    
-    
+    PUT,
+    ILLEGAL
 }
