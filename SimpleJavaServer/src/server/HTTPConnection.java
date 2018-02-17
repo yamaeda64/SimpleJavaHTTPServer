@@ -1,3 +1,8 @@
+package server;
+
+import request.RequestType;
+import response.Response;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -87,8 +92,18 @@ public class HTTPConnection extends Thread
             
             if(response.getRequestType() == RequestType.POST || response.getRequestType() == RequestType.PUT)
             {
+                while(true)
+                {
                     String temp = inStream.nextLine();
-                    System.out.println("Second reading: " + temp);
+                    if(temp.isEmpty())
+                    {
+                        break;
+                    }
+                    
+                    System.out.print("Second reading: " + temp);
+                }
+                    //String temp = inStream.nextLine();
+                   // System.out.println("Second reading: " + temp);
             }
             System.out.println("9");
             /*

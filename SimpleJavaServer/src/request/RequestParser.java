@@ -1,3 +1,4 @@
+package request;
 /**
  * Extract the information needed from the HTTP Request
  */
@@ -76,8 +77,13 @@ public class RequestParser
     }
     
     
-    /* Getters  */
+    /* Getters & Setters */
     public RequestType getType(){return type;}
     public String getPath(){return path;}
     public String getHttpVersion(){return httpVersion;}
+    
+    public void setType(RequestType requestType)
+    {
+        type = requestType;
+    }
 }

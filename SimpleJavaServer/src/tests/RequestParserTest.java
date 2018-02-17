@@ -1,5 +1,7 @@
-import org.junit.Test;
+package tests;
 
+import org.junit.Test;
+import request.*;
 import static org.junit.Assert.assertEquals;
 
 
@@ -44,11 +46,11 @@ public class RequestParserTest
     }
     
     @Test
-    public void ParseRequest_PathShouldBeSlash()
+    public void ParseRequest_PathShouldBeIndex()
     {
         RequestParser parser = new RequestParser(stringGETRequest);
         String actual = parser.getPath();
-        assertEquals("/", actual);
+        assertEquals("/index.html", actual);
     }
     
     @Test
