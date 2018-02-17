@@ -16,11 +16,8 @@ public class Response302Found extends ResponseHeader
     {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(responseStatus);
-        stringBuilder.append("Content-Length:" + responseBody.length());
+        stringBuilder.append("Location:" + "/index.html");
         stringBuilder.append("\n");
-        stringBuilder.append("Content-Type: text/html; charset=UTF-8");
-        stringBuilder.append("\n");
-        stringBuilder.append("Content-Encoding: UTF-8");
         stringBuilder.append("\n\r\n");
         stringBuilder.append(responseBody);
         

@@ -15,10 +15,14 @@ public class Response
 	  parser = new RequestParser(request);
 
 	  body = new File(getCorrectPath(resourceRootFolder, parser.getPath()));
-      
+
       if(isOutsideSourceFolder(resourceRootFolder) || !isValidRequestType()) // TODO, should 403 be displayed if it's not a GET request?
       {
           header = new Response403Forbidden(body);
+      } 
+      else if(isTempMoved()) 
+      {
+    	  header = new Response302Found(body);
       }
       else if(!body.exists())
       {
@@ -114,6 +118,13 @@ public class Response
     		return false;
     	}
     	return true;
+    }
+    
+    private boolean isTempMoved() {
+    	if(parser.getPath().equals("/htm.htm")) {
+    		return true;
+    	}
+    	return false;
     }
 
     public RequestType getRequestType()
