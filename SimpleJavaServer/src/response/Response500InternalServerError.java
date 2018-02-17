@@ -3,6 +3,11 @@ import java.io.File;
 
 public class Response500InternalServerError extends ResponseHeader
 {
+    /* Empty constructor */
+    public Response500InternalServerError()
+    {
+        
+    }
     public Response500InternalServerError(File file)
     {
         super(file);

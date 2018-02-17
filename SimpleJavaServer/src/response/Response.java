@@ -12,36 +12,51 @@ public class Response
 
   public Response(String request, String resourceRootFolder)
   {
-      parser = new RequestParser(request);
-
-	  body = new File(getCorrectPath(resourceRootFolder, parser.getPath()));
-
-      if(isOutsideSourceFolder(resourceRootFolder))  //TODO, should 403 be displayed if it's not a GET request?
+     
+      try
       {
-          header = new Response403Forbidden(body);
+          parser = new RequestParser(request);
+    
+          body = new File(getCorrectPath(resourceRootFolder, parser.getPath()));
+    
+          if(isOutsideSourceFolder(resourceRootFolder))  //TODO, should 403 be displayed if it's not a GET request?
+          {
+              header = new Response403Forbidden(body);
+          } else if(!isValidRequestType())
+          {
+              header = new Response400BadRequest(body);
+          } else if(isTempMoved())
+          {
+              header = new Response302Found(body);
+          } else if(!body.exists())
+          {
+              header = new Response404NotFound(body);
+          } else
+          {
+              header = new Response200OK(body);
+          }
       }
-      else if(!isValidRequestType())
+      catch(IllegalArgumentException e)
       {
-          header = new Response400BadRequest(body);
+         parser = new RequestParser("ILLEGAL / HTTP/1.1");
+          header =new Response400BadRequest();
       }
-      else if(isTempMoved())
-      {
-    	  header = new Response302Found(body);
-      }
-      else if(!body.exists())
-      {
-          header = new Response404NotFound(body);
-      }
-	  else
-	  {
-		  header = new Response200OK(body);
-	  }
 
      
       
 	  String response = header.getResponseHeader();
 	  System.out.println("Response: "+ response);  // TODO, debug
   }
+    
+    public Response(int statusCode)
+    {
+        if(statusCode == 500)
+        {
+            parser = new RequestParser("ILLEGAL / HTTP/1.1");
+            body = null;
+            header = new Response500InternalServerError();
+        }
+    }
     
     
     public String getResponseHeader()

@@ -65,14 +65,33 @@ public class HTTPConnection extends Thread
                Response response = null;
                if(receivedString.length()>0)
                {
-                   response = new Response(receivedString.toString(), recourceRootFolder);
+                   try
+                   {
+                       response = new Response(receivedString.toString(), recourceRootFolder);
+                   }
+                   catch(InternalError e)
+                   {
+                       response = new Response(500);
+                   }
+                   catch(Exception e)
+                   {
+                       response = new Response(500);
+                   }
                }
                
                //TODO, debug
                System.out.println(receivedString.toString());
             System.out.println("8");
-                /* Input complete
+               
+            //TODO debug
             
+            if(response.getRequestType() == RequestType.POST || response.getRequestType() == RequestType.PUT)
+            {
+                    String temp = inStream.nextLine();
+                    System.out.println("Second reading: " + temp);
+            }
+            System.out.println("9");
+            /*
                 String content = "<html>\n" +
                         "<head>\n" +
                         "<title>...\n" +

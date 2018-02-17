@@ -6,6 +6,8 @@ public class Response400BadRequest extends ResponseHeader
     String responseBody = "<HTML><HEAD><TITLE>400 Bad Request</TITLE></HEAD>" +
             "<BODY><H1>400 Bad Request</H1></BODY></HTML>";
     
+    public Response400BadRequest()
+    {}
     public Response400BadRequest(File file)
     {
         super(file);
