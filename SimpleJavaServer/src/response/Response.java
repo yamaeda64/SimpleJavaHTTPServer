@@ -16,7 +16,7 @@ public class Response
 
 	  body = new File(getCorrectPath(resourceRootFolder, parser.getPath()));
       
-      if(isOutsideSourceFolder(resourceRootFolder) || !isValidRequestType(parser.getType())) // TODO, should 403 be displayed if it's not a GET request?
+      if(isOutsideSourceFolder(resourceRootFolder) || !isValidRequestType()) // TODO, should 403 be displayed if it's not a GET request?
       {
           header = new Response403Forbidden(body);
       }
@@ -108,19 +108,12 @@ public class Response
     }
     
 
-    private boolean isValidRequestType(String type)
+    private boolean isValidRequestType()
     {
-        String[] validRequests = {"GET"}; // TODO, add "POST" and "PUT" for VG tasks in Problem 2
-    
-        for(String request : validRequests)
-        {
-            if(type.equals(request))
-            {
-                return true;
-            }
-        }
-        return false;
-    
+    	if(getRequestType() == RequestType.ILLEGAL) {
+    		return false;
+    	}
+    	return true;
     }
 
     public RequestType getRequestType()
