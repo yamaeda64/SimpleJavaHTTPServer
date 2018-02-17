@@ -8,10 +8,11 @@ public class Response
 {
   private ResponseHeader header;
   protected File body;
+  private RequestParser parser;
 
   public Response(String request, String resourceRootFolder)
   {
-	  RequestParser parser = new RequestParser(request);
+	  parser = new RequestParser(request);
 
 	  body = new File(getCorrectPath(resourceRootFolder, parser.getPath()));
       
@@ -47,14 +48,14 @@ public class Response
 	  return body;
   }
 
-  /** Checks if the full path leads to a file, otherwise it tries to change the file ending from ".htm" to ".html" 
+  /** Checks if the full path leads to a file, otherwise it tries to change the file ending from ".htm" to ".html"
    * and vice versa to see if it leads to a file and if so, returns the full path to the file
    * @param resourceRootFolder The root source folder
    * @param path Path from root folder
-   * @return A string with the correct path. If the original path leads to a file, that is immediately returned. 
+   * @return A string with the correct path. If the original path leads to a file, that is immediately returned.
    *  Otherwise it checks if path ending with .htm or .html leads to a file and returns that path
    */
-  private String getCorrectPath(String resourceRootFolder, String path) 
+  private String getCorrectPath(String resourceRootFolder, String path)
   {
 	  String fullPath = resourceRootFolder + path;
 
@@ -106,14 +107,24 @@ public class Response
         throw new InternalError("There was a problem when reading the requested file");
     }
     
-    private boolean isValidRequestType(String type) {
-    	String[] validRequests = {"GET"}; // TODO, add "POST" and "PUT" for VG tasks in Problem 2
-    	
-    	for(String request : validRequests) {
-    		if(type.equals(request)) {
-        		return true;
-        	}
-    	}
-    	return false;
+
+    private boolean isValidRequestType(String type)
+    {
+        String[] validRequests = {"GET"}; // TODO, add "POST" and "PUT" for VG tasks in Problem 2
+    
+        for(String request : validRequests)
+        {
+            if(type.equals(request))
+            {
+                return true;
+            }
+        }
+        return false;
+    
+    }
+
+    public RequestType getRequestType()
+    {
+        return parser.getType();
     }
 }

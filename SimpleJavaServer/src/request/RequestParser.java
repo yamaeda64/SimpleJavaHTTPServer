@@ -4,7 +4,7 @@
 public class RequestParser
 {
     
-    private String type;
+    private RequestType type;
     private String path;
     private String httpVersion;
     
@@ -14,12 +14,13 @@ public class RequestParser
      */
     public RequestParser(String inputRequest)
     {
-        
-        String[] request = inputRequest.split("\n");
-        
-        String[] firstLine = request[0].split(" ");
     
-        type = firstLine[0];
+        String[] request = inputRequest.split("\n");
+    
+        String[] firstLine = request[0].split(" ");
+        
+        type = RequestType.valueOf(firstLine[0]);
+        
         if(firstLine.length == 3)
         {
             path = firstLine[1];
@@ -46,8 +47,6 @@ public class RequestParser
           {
              path+="/index.html";
           }
-          //TODO, debug
-            System.out.println("Path: ----- " + path);
        }
     }
     
@@ -68,12 +67,14 @@ public class RequestParser
             }
             counter++;
         }
+        // TODO debug
+        System.out.println("Parse path");
         return false;
     }
     
     
     /* Getters  */
-    public String getType(){return type;}
+    public RequestType getType(){return type;}
     public String getPath(){return path;}
     public String getHttpVersion(){return httpVersion;}
 }
