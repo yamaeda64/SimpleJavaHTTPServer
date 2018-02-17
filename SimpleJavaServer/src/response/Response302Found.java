@@ -17,7 +17,6 @@ public class Response302Found extends ResponseHeader
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(responseStatus);
         stringBuilder.append("Location:" + "/index.html");
-        stringBuilder.append("\n");
         stringBuilder.append("\n\r\n");
         stringBuilder.append(responseBody);
         

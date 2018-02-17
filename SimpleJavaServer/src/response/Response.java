@@ -12,15 +12,19 @@ public class Response
 
   public Response(String request, String resourceRootFolder)
   {
-	  parser = new RequestParser(request);
+      parser = new RequestParser(request);
 
 	  body = new File(getCorrectPath(resourceRootFolder, parser.getPath()));
 
-      if(isOutsideSourceFolder(resourceRootFolder) || !isValidRequestType()) // TODO, should 403 be displayed if it's not a GET request?
+      if(isOutsideSourceFolder(resourceRootFolder))  //TODO, should 403 be displayed if it's not a GET request?
       {
           header = new Response403Forbidden(body);
-      } 
-      else if(isTempMoved()) 
+      }
+      else if(!isValidRequestType())
+      {
+          header = new Response400BadRequest(body);
+      }
+      else if(isTempMoved())
       {
     	  header = new Response302Found(body);
       }
@@ -33,6 +37,8 @@ public class Response
 		  header = new Response200OK(body);
 	  }
 
+     
+      
 	  String response = header.getResponseHeader();
 	  System.out.println("Response: "+ response);  // TODO, debug
   }
