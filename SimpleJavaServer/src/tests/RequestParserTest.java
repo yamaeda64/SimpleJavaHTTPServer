@@ -31,7 +31,9 @@ public class RequestParserTest
             "Accept-Encoding: gzip, deflate, br\n" +
             "Accept-Language: en-US,en;q=0.9,sv;q=0.8\n\r\n" +
             "Name=AnInputName\n\r\n";
-            
+    
+    public final String stringFAULTRequest = "FAULT / HTTP/1.1\n" +
+            "Host: 127.0.0.1:4567\n";
             
     @Test
     public void ParseRequest_TypeShouldBeGET()
@@ -72,7 +74,16 @@ public class RequestParserTest
         RequestType actual = parser.getType();
         assertEquals(RequestType.POST, actual);
     }
+    
+    @Test
+    public void ParseRequest_TypeShouldBeILLEGAL()
+    {
+        RequestParser parser = new RequestParser(stringFAULTRequest);
+        RequestType actual = parser.getType();
+        assertEquals(RequestType.ILLEGAL, actual);
+    }
 
+    
 }
     
 
