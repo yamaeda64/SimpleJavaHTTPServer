@@ -22,19 +22,18 @@ public class Response
       try
       {
           parser = new RequestParser(request);
-          
           body = new File(getCorrectPath(resourceRootFolder, parser.getPath()));
-    
           RedirectList redirectList = new RedirectList();
-          if(isOutsideSourceFolder(resourceRootFolder))  //TODO, should 403 be displayed if it's not a GET request?
+          
+          if(isOutsideSourceFolder(resourceRootFolder))
           {
               header = new Response403Forbidden(body);
           } else if(!isValidRequestType())
           {
               header = new Response400BadRequest(body);
-          } else if(isTempMoved())
+          } else if(redirectList.isMoved(parser.getPath()))
           {
-              header = new Response302Found(body);
+              header = new Response302Found(body, redirectList.getRedirectPath(parser.getPath()));
           } else if(!body.exists())
           {
               header = new Response404NotFound(body);
