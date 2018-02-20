@@ -1,5 +1,6 @@
-import java.io.File;
+package response;
 
+import java.io.File;
 
 public class Response302Found extends ResponseHeader
 {

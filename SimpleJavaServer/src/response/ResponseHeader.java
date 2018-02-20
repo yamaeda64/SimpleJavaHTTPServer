@@ -1,3 +1,5 @@
+package response;
+
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -17,7 +19,7 @@ public class ResponseHeader
     private String currentTimeField;
     private boolean includesBody;             // A boolean to set if response has a message included, if false body should be attatched
     
-    // Empty constructor
+    // EM
     public ResponseHeader()
     {}
     public ResponseHeader(File file)

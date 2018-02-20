@@ -1,3 +1,9 @@
+package response;
+
+import redirect.RedirectList;
+import request.RequestParser;
+import request.RequestType;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -16,9 +22,10 @@ public class Response
       try
       {
           parser = new RequestParser(request);
-    
+          
           body = new File(getCorrectPath(resourceRootFolder, parser.getPath()));
     
+          RedirectList redirectList = new RedirectList();
           if(isOutsideSourceFolder(resourceRootFolder))  //TODO, should 403 be displayed if it's not a GET request?
           {
               header = new Response403Forbidden(body);
