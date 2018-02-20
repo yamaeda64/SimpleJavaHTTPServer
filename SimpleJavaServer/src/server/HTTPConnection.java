@@ -3,11 +3,9 @@ package server;
 import request.RequestType;
 import response.Response;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.Socket;
+import java.util.Base64;
 import java.util.Scanner;
 
 /**
@@ -44,6 +42,7 @@ public class HTTPConnection extends Thread
             byte[] buffer;
     
             
+            
                 /* make sure server wait until something actually arrive before trying to echo */
           //  while(inStream.available() < 1)
         //    {
@@ -56,6 +55,7 @@ public class HTTPConnection extends Thread
           
                while(true)
                {
+                   
                    String temp = inStream.nextLine();
                    if(temp.isEmpty())
                    {
@@ -89,21 +89,65 @@ public class HTTPConnection extends Thread
             System.out.println("8");
                
             //TODO debug
-            
+            String webkitFormBoundary ="";
             if(response.getRequestType() == RequestType.POST || response.getRequestType() == RequestType.PUT)
             {
                 while(true)
                 {
                     String temp = inStream.nextLine();
+                    if(temp.contains("WebKitFormBoundary"))
+                    {
+                        webkitFormBoundary = temp.substring(24);
+                        System.out.println("found Webkit: " + temp.substring(24));
+                    }
                     if(temp.isEmpty())
                     {
                         break;
                     }
                     
-                    System.out.print("Second reading: " + temp);
+                    
+                    System.out.println("Second reading: " + temp);
                 }
+                File outputFile = new File("/Users/joakimbergqvist/Documents/Joakims/Document/Network/Assignment2/Server/SimpleJavaHTTPServer/SimpleJavaServer/ServerAssets/newFiles/testFromString.txt");
+                FileOutputStream fileOutputStream = new FileOutputStream(outputFile);
+                byte[] readImage = new byte[1024*1024];
+                
+                int counter = 0;
+                while(true)
+                {
+                    
+                    System.out.println("hasByte: " + inStream.hasNextByte());
+                    System.out.println("hasLine: " + inStream.hasNextLine());
+                    //readImage[counter] = inStream.nextByte();
+                    System.out.print("counter: " + readImage[counter]);
+                    String temp = inStream.nextLine();
+                   System.out.println("third reading: " + temp);
+                   byte[] charTest = temp.getBytes();
+                   fileOutputStream.write(Base64(charTest));
+                   for(int i = 0; i<charTest.length; i++)
+                   {
+                       System.out.print((byte)(int)charTest[i] + " ");
+                       
+                      
+                   }
+                   
+                   if(temp.contains(webkitFormBoundary + "--"))
+                    {
+                        break;
+                    }
+                    counter++;
+                   
+                   
+                }
+                fileOutputStream.close();
+                
                     //String temp = inStream.nextLine();
                    // System.out.println("Second reading: " + temp);
+            
+            
+            
+            
+            
             }
             System.out.println("9");
             /*
