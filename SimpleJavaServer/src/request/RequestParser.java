@@ -10,6 +10,8 @@ public class RequestParser
     private String httpVersion;
     private String boundary;
     
+    private long contentLength = -1;
+    
     /**
      * Constructor that takes the response as a String
      * @param inputRequest the HTTP Response as a String
@@ -33,16 +35,13 @@ public class RequestParser
             path = firstLine[1];
             httpVersion = firstLine[2];
         }
-        else if(firstLine.length == 2)
-        {
-            path = "/";
-            httpVersion = firstLine[1];
-        }
+     
         else
         {
             throw new IllegalArgumentException("The request was in illegal form");
         }
         
+        /* Collect the boundary and Content-Length from the request */
         for(String s : request)
         {
             if(s.contains("boundary"))
@@ -50,9 +49,14 @@ public class RequestParser
                 int startPos = s.lastIndexOf('=')+1;
                 boundary = s.substring(startPos);
             }
+            if(s.contains("Content-Length"))
+            {
+                int startPos = s.lastIndexOf(':')+2;
+                contentLength = Integer.parseInt(s.substring(startPos).trim());
+            }
         }
         
-        
+        /* Adds index.html to the path if the path is a folder */
         if(isPathAFile(path) == false)
         {
           if(path.charAt(path.length()-1) == '/')
@@ -65,25 +69,25 @@ public class RequestParser
           }
        }
     }
-
+    
+    /**
+     * Checks if a path has a . after the last slash and then sees the path as a
+     * direct path to a file, otherwise the path is concidered a folder.
+     * @param path String of the path
+     * @return true if path is a file, othervise false
+     */
     public boolean isPathAFile(String path)
     {
-        int counter = 0;
-        if(path.length() > 4)
+        int lastSlash = path.lastIndexOf('/');
+        
+        if(path.substring(lastSlash).contains("."))
         {
-            counter = path.length() - 5;
+            return true;
         }
-        while(counter < path.length()-1)
+        else
         {
-            if(path.charAt(counter) == '.')
-            {
-                return true;
-            }
-            counter++;
+            return false;
         }
-        // TODO debug
-        System.out.println("Parse path");
-        return false;
     }
     
     
@@ -100,5 +104,9 @@ public class RequestParser
     public String getBoundary()
     {
             return boundary;
+    }
+    public long getContentLength()
+    {
+        return contentLength;
     }
 }
