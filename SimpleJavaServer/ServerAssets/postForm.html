@@ -1,9 +1,11 @@
 <html>
 <body>
 
-<form action="http://127.0.0.1:8080/postForm.html"method="post" enctype="multipart/form-data">
+<form action="/newFiles/"method="post" enctype="multipart/form-data">
+
 
 <input name="newPic" type="file" ><br />
+<input type="hidden" name="_method" value="PUT">
 
 <input type="submit">
 </form>
