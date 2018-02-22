@@ -158,4 +158,14 @@ public class Response
     {
         return parser.getType();
     }
+    
+    public String getPath()
+    {
+        return parser.getPath();
+    }
+    
+    public String getBoundary()
+    {
+        return parser.getBoundary();
+    }
 }

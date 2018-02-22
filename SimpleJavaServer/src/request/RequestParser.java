@@ -8,6 +8,7 @@ public class RequestParser
     private RequestType type;
     private String path;
     private String httpVersion;
+    private String boundary;
     
     /**
      * Constructor that takes the response as a String
@@ -40,6 +41,15 @@ public class RequestParser
         else
         {
             throw new IllegalArgumentException("The request was in illegal form");
+        }
+        
+        for(String s : request)
+        {
+            if(s.contains("boundary"))
+            {
+                int startPos = s.lastIndexOf('=')+1;
+                boundary = s.substring(startPos);
+            }
         }
         
         
@@ -85,5 +95,10 @@ public class RequestParser
     public void setType(RequestType requestType)
     {
         type = requestType;
+    }
+    
+    public String getBoundary()
+    {
+            return boundary;
     }
 }
