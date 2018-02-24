@@ -4,7 +4,6 @@ package request;
  */
 public class RequestParser
 {
-    
     private RequestType type;
     private String path;
     private String httpVersion;
@@ -22,13 +21,11 @@ public class RequestParser
         String[] request = inputRequest.split("\n");
     
         String[] firstLine = request[0].split(" ");
-        
         try {
         	type = RequestType.valueOf(firstLine[0]);
         } catch (IllegalArgumentException e) {
         	type = RequestType.ILLEGAL;
         }
-        
         
         if(firstLine.length == 3)
         {
@@ -56,8 +53,8 @@ public class RequestParser
             }
         }
         
-        /* Adds index.html to the path if the path is a folder */
-        if(isPathAFile(path) == false)
+        /* Adds index.html to the path if the path is a folder and a GET request */
+        if(!isPathAFile(path) && type == RequestType.GET)
         {
           if(path.charAt(path.length()-1) == '/')
           {

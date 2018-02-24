@@ -1,29 +1,31 @@
 package response;
 
 
-public class Response500InternalServerError extends ResponseHeader
+public class Response201Created extends ResponseHeader
 {
-    /* Empty constructor */
-    public Response500InternalServerError()
+    String redirectPath;
+    
+    public Response201Created(String redirectPath)
     {
         super();
+        this.redirectPath = redirectPath;
     }
-   
-    protected final String responseStatus = "HTTP/1.1 500 Internal Server Error\n";
+    
+    protected final String responseStatus = "HTTP/1.1 201 Created\n";
     
     public String getResponseHeader()
     {
-        String responseBody = "<HTML><HEAD><TITLE>500 Internal Server Error</TITLE></HEAD>" +
-                                    "<BODY><H1>500 Internal Server Error</H1></BODY></HTML>";
+        String responseBody2 = "<HTML><HEAD><TITLE>201 Created</TITLE></HEAD>" +
+                "<BODY><H1>201 Created</H1></BODY></HTML>";
+        
+        String responseBody = "";
         
         
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(responseStatus);
         stringBuilder.append("Content-Length:" + responseBody.length());
         stringBuilder.append("\n");
-        stringBuilder.append("Content-Type: text/html; charset=UTF-8");
-        stringBuilder.append("\n");
-        stringBuilder.append("Content-Encoding: UTF-8");
+        stringBuilder.append("Resource Location: "+ redirectPath);
         stringBuilder.append("\n");
         stringBuilder.append(getCurrentTimeField());
         stringBuilder.append("\n");
@@ -31,7 +33,7 @@ public class Response500InternalServerError extends ResponseHeader
         stringBuilder.append(responseBody);
         stringBuilder.append("\n");
         stringBuilder.append("\r\n");
-       
+        
         super.setIncludesBody(true);
         
         return stringBuilder.toString();

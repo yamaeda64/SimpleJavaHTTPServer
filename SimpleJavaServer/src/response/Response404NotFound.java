@@ -1,13 +1,10 @@
 package response;
 
-import java.io.File;
-
-
 public class Response404NotFound extends ResponseHeader
 {
-    public Response404NotFound(File file)
+    public Response404NotFound()
     {
-        super(file);
+        super();
     }
     protected final String responseStatus = "HTTP/1.1 404 Not Found\n";
     

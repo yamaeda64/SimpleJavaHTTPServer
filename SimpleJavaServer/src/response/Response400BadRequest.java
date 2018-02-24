@@ -1,19 +1,15 @@
 package response;
 
-import java.io.File;
-
-
 public class Response400BadRequest extends ResponseHeader
 {
     String responseBody = "<HTML><HEAD><TITLE>400 Bad Request</TITLE></HEAD>" +
             "<BODY><H1>400 Bad Request</H1></BODY></HTML>";
     
     public Response400BadRequest()
-    {}
-    public Response400BadRequest(File file)
     {
-        super(file);
+        super();
     }
+   
     protected final String responseStatus = "HTTP/1.1 400 Bad Request\n";
     
     public String getResponseHeader()
@@ -27,8 +23,6 @@ public class Response400BadRequest extends ResponseHeader
         stringBuilder.append("Content-Encoding: UTF-8");
         stringBuilder.append("\n\r\n");
         stringBuilder.append(responseBody);
-        
-        
         
         super.setIncludesBody(true);
         return stringBuilder.toString();

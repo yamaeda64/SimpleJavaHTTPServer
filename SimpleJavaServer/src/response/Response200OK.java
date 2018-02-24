@@ -9,47 +9,59 @@ import java.nio.file.Files;
  */
 public class Response200OK extends ResponseHeader
 {
-    File file;
+    private File file;
+    
+    public Response200OK()
+    {
+        super();
+    }
     public Response200OK(File file)
     {
         super(file);
         this.file = file;
     }
     protected final String responseStatus = "HTTP/1.1 200 OK\n";
+    String responseBody = "<HTML><HEAD><TITLE>200 OK</TITLE></HEAD>" +
+            "<BODY><H1>200 OK</H1></BODY></HTML>";
     
     public String getResponseHeader()
     {
-        
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(responseStatus);
-        stringBuilder.append("Content-Length:" + file.length());
-        stringBuilder.append("\n");
-        
-        // TODO, add charset? + double check if there's an issue using the probeContentType approach
-        try {
-            stringBuilder.append("Content-type: " + Files.probeContentType(file.toPath()));
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(file != null)
+        {
+            stringBuilder.append("Content-Length:" + file.length());
+            stringBuilder.append("\n");
+            try {
+                stringBuilder.append("Content-type: " + Files.probeContentType(file.toPath()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            stringBuilder.append("\n");
         }
-        stringBuilder.append("\n");
         
-        //stringBuilder.append("Content-Type: text/html; charset=UTF-8");   // TODO, this must differ depending on filetype
-        //stringBuilder.append("\n");
-        //stringBuilder.append("Content-Encoding: UTF-8");                    // TODO, this must differ depending on filetype (encoding)
-        //  stringBuilder.append("Content-Type: image/png");
-        // stringBuilder.append("\n");
-        stringBuilder.append(getLastModifiedField());
+        if(file == null)
+        {
+            super.setIncludesBody(true);
+        }
+        else
+        {
+            stringBuilder.append(getLastModifiedField());
+            super.setIncludesBody(false);
+        }
+        
         stringBuilder.append("\n");
         stringBuilder.append(getCurrentTimeField());
         stringBuilder.append("\n");
-        // TODO test with cach and connection
         stringBuilder.append("Connection: close\n");
         stringBuilder.append("Cache-Control: no-store\n");
         stringBuilder.append("\r\n");
         
-        super.setIncludesBody(false);
+        if(super.includesBody() == true)
+        {
+            stringBuilder.append(responseBody);
+        }
         
         return stringBuilder.toString();
     }
-    
 }
