@@ -1,14 +1,37 @@
 <html>
-<body>
+  <body>
+    <center>
+      <h1>PUT</h1>
+      <input type="file" id="PUT"/>
+      <button type="button" onclick="sendRequest('PUT')">Send PUT request</button>
+      <br><br>
+      <h1>POST</h1>
+      <input type="file" id="POST"/>
+      <button type="button" onclick="sendRequest('POST')">Send POST request</button>
+    </center>
 
-<form action="/newFiles/index.html"method="post" enctype="multipart/form-data">
 
+    <script>
+      function sendRequest(requestType)
+      {
+        var putFiles = PUT.files;
+        var postFiles = POST.files;
 
-<input name="newPic" type="file" ><br />
-<input type="hidden" name="_method" value="PUT">
+        // Shows error and exits the function if 0 or 2+ files are selected for the send request
+        if((requestType == 'PUT' && putFiles.length != 1) || (requestType == 'POST' && postFiles.length != 1) )
+        {
+            alert('Error: Please select a file before pressing \"Send ' + requestType + ' Request\"');
+            return;
+        }
 
-<input type="submit">
-</form>
+        // FormData is needed to send the file with XMLHttpRequest
+        var formData = new FormData();
+        formData.append("file", document.getElementById(requestType).files[0]);
 
-</body>
+        var xhr = new XMLHttpRequest();
+        xhr.open(requestType, "http://localhost:8000/newFiles/", true);
+        xhr.send(formData);
+        }
+    </script>
+  </body>
 </html>
