@@ -13,19 +13,24 @@ import java.util.Date;
 public class ResponseHeader
 {
     private long contentLength;
-    private String contentEncoding;                 // TODO, read up on content encoding
+    private String contentEncoding;
     private LocalDateTime sourceLastModified;
-    private String contentType;                     // TODO, manage to write this from the file extension
+    private String contentType;
     private String currentTimeField;
     private boolean includesBody;             // A boolean to set if response has a message included, if false body should be attatched
     
-    // EM
+    
     public ResponseHeader()
-    {}
+    {
+        contentLength = 0;
+        currentTimeField = "Date: " + DateTimeFormatter.RFC_1123_DATE_TIME.format(ZonedDateTime.now(ZoneId.of("GMT")));
+    }
+    
     public ResponseHeader(File file)
     {
         this.contentLength = file.length();
         
+        /* Converts last modified from current Timezone to GMT */
         Date lastModifiedTemp = new Date(file.lastModified());  // get time in millis from Epoch
         sourceLastModified = lastModifiedTemp.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         currentTimeField = "Date: " + DateTimeFormatter.RFC_1123_DATE_TIME.format(ZonedDateTime.now(ZoneId.of("GMT")));

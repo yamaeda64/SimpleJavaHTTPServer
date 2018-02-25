@@ -11,10 +11,12 @@ public class RedirectList {
     
     public boolean isMoved(String pathToCheck) {
         for(MovedPath path : movedPaths) {
-            if(path.getCurrentPath().equals(pathToCheck)) {
+            if(path.getCurrentPath().equals(pathToCheck))
+            {
                 return true;
             }
         }
+        
         return false;
     }
     
