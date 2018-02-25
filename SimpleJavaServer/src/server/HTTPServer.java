@@ -83,8 +83,6 @@ public class HTTPServer
             /* Listen if anyone connects to the clientSocket, if so, start a new thread */
             while(true)
             {
-
-               
                 //END DEBUG
                 Socket clientSocket;
                 clientSocket = serverSocket.accept();

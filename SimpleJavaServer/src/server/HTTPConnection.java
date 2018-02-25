@@ -186,9 +186,11 @@ public class HTTPConnection extends Thread
                     {
                         byteCounter++;
                         isLooping = false;
+                        inputStream.read();  // consume last newLine
                     }
                 }
             }
+            
         }
                 
         /* Extract the important details from the transmision head */
@@ -357,6 +359,7 @@ public class HTTPConnection extends Thread
             }
         }
         fileOutputStream.close();
+        
         return 201;
     }
     
