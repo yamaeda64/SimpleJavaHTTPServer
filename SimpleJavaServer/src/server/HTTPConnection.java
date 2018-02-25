@@ -53,7 +53,7 @@ public class HTTPConnection extends Thread
             
           /* If request is POST or PULL, read body */
             int responseNumber = 500;
-            if(response.getRequestType() == RequestType.POST || response.getRequestType() == RequestType.PUT)
+            if(inputString.length() > 5 && (response.getRequestType() == RequestType.POST || response.getRequestType() == RequestType.PUT))
             {
                 try
                 {
@@ -73,7 +73,7 @@ public class HTTPConnection extends Thread
             byte[] buffer;
     
     
-            if(true)
+            if(inputString.length() > 5)
             {
                 buffer = response.getResponseHeader().getBytes();
     
@@ -190,7 +190,6 @@ public class HTTPConnection extends Thread
                     }
                 }
             }
-            
         }
                 
         /* Extract the important details from the transmision head */

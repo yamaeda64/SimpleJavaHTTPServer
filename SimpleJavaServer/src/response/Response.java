@@ -55,7 +55,7 @@ public class Response
         catch(IllegalArgumentException e)
         {
             parser = new RequestParser("ILLEGAL / HTTP/1.1");
-            header =new Response400BadRequest();
+            header = new Response400BadRequest();
         }
         
         String response = header.getResponseHeader();

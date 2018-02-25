@@ -31,8 +31,12 @@ public class RequestParser
         {
             path = firstLine[1];
             httpVersion = firstLine[2];
+            if(!path.startsWith("/"))
+            {
+                throw new IllegalArgumentException("The path must start with \"/\"");
+            }
         }
-     
+        
         else
         {
             throw new IllegalArgumentException("The request was in illegal form");
@@ -92,12 +96,6 @@ public class RequestParser
     public RequestType getType(){return type;}
     public String getPath(){return path;}
     public String getHttpVersion(){return httpVersion;}
-    
-    public void setType(RequestType requestType)
-    {
-        type = requestType;
-    }
-    
     public String getBoundary()
     {
             return boundary;

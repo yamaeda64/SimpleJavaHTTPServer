@@ -30,6 +30,7 @@ public class Response200OK extends ResponseHeader
         stringBuilder.append(responseStatus);
         if(file != null)
         {
+            
             stringBuilder.append("Content-Length:" + file.length());
             stringBuilder.append("\n");
             try {
