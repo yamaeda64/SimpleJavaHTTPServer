@@ -158,9 +158,10 @@ public class Response
      */
     private boolean isOutsideSourceFolder(String resourceFolder, String path) throws IOException
     {
+        File resourceFolderAsFile = new File (resourceFolder);
         File file = new File(resourceFolder + path);
 
-        if(file.getCanonicalPath().startsWith(resourceFolder))
+        if(file.getCanonicalPath().startsWith(resourceFolderAsFile.getCanonicalPath()))
         {
             return false;
         }
